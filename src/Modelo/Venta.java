@@ -6,6 +6,7 @@ public class Venta {
     private int cliente;
     private String nombre_cli;
     private String vendedor;
+    private double subtotal; //para agregar una variable para un total ya con iva.
     private double total;
     private String fecha;
     
@@ -13,11 +14,12 @@ public class Venta {
         
     }
 
-    public Venta(int id, int cliente, String nombre_cli, String vendedor, double total, double subtotal, String fecha) {
+    public Venta(int id, int cliente, String nombre_cli, String vendedor, double subtotal, double total, String fecha) {
         this.id = id;
         this.cliente = cliente;
         this.nombre_cli = nombre_cli;
         this.vendedor = vendedor;
+        this.subtotal = subtotal;
         this.total = total;
         this.fecha = fecha;
     }
@@ -54,6 +56,16 @@ public class Venta {
         this.vendedor = vendedor;
     }
 
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+ 
+    
     public double getTotal() {
         return total;
     }
