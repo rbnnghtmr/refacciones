@@ -151,7 +151,7 @@ public class VentaDao {
         }
         return cl;
     }
-    public void pdfV(int idventa, int Cliente, double total, String usuario) {
+    public void pdfV(int idventa, int Cliente, double subtotal, double total, String usuario) {
         try {
             Date date = new Date();
             FileOutputStream archivo;
