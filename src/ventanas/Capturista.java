@@ -5,7 +5,7 @@
  */
 package ventanas;
 
-import clases.Conexion;
+import Modelo.Conexion;
 import java.sql.*;
 
 import com.itextpdf.text.BaseColor;
@@ -195,12 +195,14 @@ public class Capturista extends javax.swing.JFrame {
            // documento.add(header);
             documento.add(parrafo);
             
-            PdfPTable tabla = new PdfPTable(5);
+            PdfPTable tabla = new PdfPTable(6);
             tabla.addCell("ID");
+            tabla.addCell("RFC");
             tabla.addCell("Nombre");
             tabla.addCell("email");
             tabla.addCell("Télefono");
             tabla.addCell("Dirección");
+            
             
             try {
                 Connection cn = Conexion.conectar();
@@ -215,6 +217,8 @@ public class Capturista extends javax.swing.JFrame {
                         tabla.addCell(rs.getString(3));
                         tabla.addCell(rs.getString(4));
                         tabla.addCell(rs.getString(5));
+                        tabla.addCell(rs.getString(6));
+                        
                         
                     } while (rs.next());
                     documento.add(tabla);

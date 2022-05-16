@@ -5,7 +5,7 @@
  */
 package ventanas;
 
-import clases.Conexion;
+import Modelo.Conexion;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -148,7 +148,7 @@ public class RegistrarClientes extends javax.swing.JFrame {
     private void jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActionPerformed
 
         int validacion = 0;
-        String nombre, mail, telefono, direccion, rfc;
+        String rfc, nombre, mail, telefono, direccion;
         
         nombre = txt_nombre.getText().trim();
         mail = txt_mail.getText().trim();

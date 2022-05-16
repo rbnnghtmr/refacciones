@@ -5,7 +5,7 @@
  */
 package ventanas;
 
-import clases.Conexion;
+import Modelo.Conexion;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -197,15 +197,21 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
             validacion++;
         }
         
-        if(permisos_cmb == 1){
-            permisos_string = "Administrador";
-        } else if(permisos_cmb == 2){
-            permisos_string = "Capturista";
-        } else if(permisos_cmb == 3){
-            permisos_string = "Tecnico";
-        }
-        else if(permisos_cmb == 4){
-            permisos_string = "Vendedor";
+        switch (permisos_cmb) {
+            case 1:
+                permisos_string = "Administrador";
+                break;
+            case 2:
+                permisos_string = "Capturista";
+                break;
+            case 3:
+                permisos_string = "Tecnico";
+                break;
+            case 4:
+                permisos_string = "Vendedor";
+                break;
+            default:
+                break;
         }
         
         try {

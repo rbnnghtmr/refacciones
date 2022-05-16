@@ -6,7 +6,7 @@
 package ventanas;
 
 import java.sql.*;
-import clases.Conexion;
+import Modelo.Conexion;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -63,17 +63,17 @@ public class Informacion_Cliente extends javax.swing.JFrame {
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                    "select * from clientes where id_cliente = '" + IDcliente_update + "'");
+                    "select * from clientes where id = '" + IDcliente_update + "'");
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                setTitle("Información del cliente " + rs.getString("nombre_cliente") + " - Sesión de " + user);
-                jLabel_Titulo.setText("Información del cliente " + rs.getString("nombre_cliente"));
+                setTitle("Información del cliente " + rs.getString("nombre") + " - Sesión de " + user);
+                jLabel_Titulo.setText("Información del cliente " + rs.getString("nombre"));
 
-                txt_nombre.setText(rs.getString("nombre_cliente"));
-                txt_mail.setText(rs.getString("mail_cliente"));
-                txt_telefono.setText(rs.getString("tel_cliente"));
-                txt_direccion.setText(rs.getString("dir_cliente"));
+                txt_nombre.setText(rs.getString("nombre"));
+                txt_mail.setText(rs.getString("mail"));
+                txt_telefono.setText(rs.getString("telefono"));
+                txt_direccion.setText(rs.getString("direccion"));
                 txt_ultimaModificacion.setText(rs.getString("ultima_modificacion"));
             }
             cn.close();
@@ -321,8 +321,8 @@ public class Informacion_Cliente extends javax.swing.JFrame {
 
                 Connection cn = Conexion.conectar();
                 PreparedStatement pst = cn.prepareStatement(
-                        "update clientes set nombre_cliente=?, mail_cliente=?, tel_cliente=?, dir_cliente=?, ultima_modificacion=? "
-                        + "where id_cliente = '" + IDcliente_update + "'");
+                        "update clientes set nombre=?, mail=?, telefono=?, direccion=?, ultima_modificacion=? "
+                        + "where id = '" + IDcliente_update + "'");
 
                 pst.setString(1, nombre);
                 pst.setString(2, mail);
@@ -364,17 +364,17 @@ public class Informacion_Cliente extends javax.swing.JFrame {
             String ruta = System.getProperty("user.home");
             PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Documents/" + txt_nombre.getText().trim() + ".pdf"));
 
-            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/images/BannerPDF.jpeg");
+            /*com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/images/BannerPDF.jpeg");
             header.scaleToFit(200, 420);
             header.setAlignment(Chunk.ALIGN_CENTER);
-
+*/
             Paragraph parrafo = new Paragraph();
             parrafo.setAlignment(Paragraph.ALIGN_CENTER);
             parrafo.add("Información del cliente. \n \n");
             parrafo.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
 
             documento.open();
-            documento.add(header);
+           // documento.add(header);
             documento.add(parrafo);
 
             PdfPTable tablaCliente = new PdfPTable(5);
@@ -388,7 +388,7 @@ public class Informacion_Cliente extends javax.swing.JFrame {
 
                 Connection cn = Conexion.conectar();
                 PreparedStatement pst = cn.prepareStatement(
-                        "select * from clientes where id_cliente = '" + IDcliente_update + "'");
+                        "select * from clientes where id = '" + IDcliente_update + "'");
 
                 ResultSet rs = pst.executeQuery();
 

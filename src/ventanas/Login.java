@@ -1,13 +1,12 @@
 
 package ventanas;
 
-import Vista.ModuloVenta;
 import java.awt.Image;
 import java.awt.Toolkit;
 //import javax.swing.Icon;
 //import javax.swing.ImageIcon;
 import java.sql.*;
-import clases.Conexion;
+import Modelo.Conexion;
 import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
@@ -25,6 +24,8 @@ public class Login extends javax.swing.JFrame {
       
         
     }
+    
+    
 
     @Override
     public Image getIconImage() {
@@ -152,7 +153,7 @@ public class Login extends javax.swing.JFrame {
                     }
                     else if (tipo_nivel.equalsIgnoreCase("Vendedor") && estatus.equalsIgnoreCase("Activo")){
                         dispose();
-                        new ModuloVenta().setVisible(true);
+                       new ModuloVenta().setVisible(true);
                     }
 
                 } else {

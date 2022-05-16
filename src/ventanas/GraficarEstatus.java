@@ -6,7 +6,7 @@
 package ventanas;
 
 import java.sql.*;
-import clases.Conexion;
+import Modelo.Conexion;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;

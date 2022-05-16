@@ -6,7 +6,7 @@
 package ventanas;
 
 import java.sql.*;
-import clases.Conexion;
+import Modelo.Conexion;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -48,14 +48,14 @@ public class GestionarClientes extends javax.swing.JFrame {
             Connection cn = Conexion.conectar();
             
             PreparedStatement pst = cn.prepareStatement(
-                    "select id, rfc, nombre, mail, tel, dir, ultima_modificacion  from clientes");
+                    "select id, rfc, nombre, mail, telefono, direccion, ultima_modificacion  from clientes");
             
             ResultSet rs = pst.executeQuery();
             
             jTable_clientes = new JTable(model);
             jScrollPane1.setViewportView(jTable_clientes);
             
-            model.addColumn(" ");
+            model.addColumn("ID");
             model.addColumn("Nombre");
             model.addColumn("em@il");
             model.addColumn("Télefono");
@@ -130,10 +130,13 @@ public class GestionarClientes extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Title 2", "Title 3", "Title 4"
             }
         ));
         jScrollPane1.setViewportView(jTable_clientes);
+        if (jTable_clientes.getColumnModel().getColumnCount() > 0) {
+            jTable_clientes.getColumnModel().getColumn(0).setPreferredWidth(60);
+        }
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 630, 180));
 

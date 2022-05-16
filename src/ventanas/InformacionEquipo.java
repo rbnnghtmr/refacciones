@@ -5,7 +5,7 @@
  */
 package ventanas;
 
-import clases.Conexion;
+import Modelo.Conexion;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;

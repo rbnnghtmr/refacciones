@@ -5,8 +5,7 @@
  */
 package ventanas;
 
-import Vista.ModuloVenta;
-import clases.Conexion;
+import Modelo.Conexion;
 import java.sql.*;
 
 import com.itextpdf.text.BaseColor;

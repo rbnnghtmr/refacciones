@@ -6,7 +6,7 @@
 package ventanas;
 
 import java.sql.*;
-import clases.Conexion;
+import Modelo.Conexion;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
