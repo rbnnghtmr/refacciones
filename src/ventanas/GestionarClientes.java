@@ -48,7 +48,7 @@ public class GestionarClientes extends javax.swing.JFrame {
             Connection cn = Conexion.conectar();
             
             PreparedStatement pst = cn.prepareStatement(
-                    "select id, rfc, nombre, mail, telefono, direccion, ultima_modificacion  from clientes");
+                    "select id, rfc, nombre, mail, telefono, ultima_modificacion  from clientes");
             
             ResultSet rs = pst.executeQuery();
             
@@ -56,10 +56,10 @@ public class GestionarClientes extends javax.swing.JFrame {
             jScrollPane1.setViewportView(jTable_clientes);
             
             model.addColumn("ID");
+            model.addColumn("RFC");
             model.addColumn("Nombre");
             model.addColumn("em@il");
             model.addColumn("Télefono");
-            model.addColumn("direccion");
             model.addColumn("Modificado por");
             
             while (rs.next()) {
@@ -124,13 +124,13 @@ public class GestionarClientes extends javax.swing.JFrame {
 
         jTable_clientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
         jScrollPane1.setViewportView(jTable_clientes);
