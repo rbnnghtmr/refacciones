@@ -70,9 +70,9 @@ public class CapturistaAdministrador extends javax.swing.JFrame {
         }
     }
     
-    @Override
+  @Override
     public Image getIconImage() {
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Img/Para la vida.png"));
         return retValue;
     }
 
@@ -95,6 +95,7 @@ public class CapturistaAdministrador extends javax.swing.JFrame {
         btnRegresarAdministrador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setBackground(new java.awt.Color(51, 51, 51));

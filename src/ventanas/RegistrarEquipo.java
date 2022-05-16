@@ -36,11 +36,11 @@ public class RegistrarEquipo extends javax.swing.JFrame {
         try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                "select nombre_cliente from clientes where id_cliente = '" + IDcliente_update + "'");
+                "select nombre from clientes where id = '" + IDcliente_update + "'");
             ResultSet rs = pst.executeQuery();
             
             if(rs.next()){
-                nom_cliente = rs.getString("nombre_cliente");
+                nom_cliente = rs.getString("nombre");
             }            
         } catch (SQLException e) {
             System.err.println("Error al consultar el nombre del cliente.");
@@ -60,7 +60,7 @@ public class RegistrarEquipo extends javax.swing.JFrame {
     
     @Override
     public Image getIconImage() {
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("images/icon.png"));
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Img/Para la vida.png"));
         return retValue;
     }
 
@@ -182,7 +182,7 @@ public class RegistrarEquipo extends javax.swing.JFrame {
         getContentPane().add(jLabel_footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, -1, -1));
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 630, 460));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 680, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
