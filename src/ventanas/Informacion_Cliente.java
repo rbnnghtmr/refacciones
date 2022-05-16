@@ -175,6 +175,9 @@ public class Informacion_Cliente extends javax.swing.JFrame {
             }
         ));
         jScrollPane_equipos.setViewportView(jTable_equipos);
+        if (jTable_equipos.getColumnModel().getColumnCount() > 0) {
+            jTable_equipos.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         getContentPane().add(jScrollPane_equipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 380, 120));
 
