@@ -153,7 +153,7 @@ public class Login extends javax.swing.JFrame {
                     }
                     else if (tipo_nivel.equalsIgnoreCase("Vendedor") && estatus.equalsIgnoreCase("Activo")){
                         dispose();
-                       new ModuloVenta().setVisible(true);
+                       new ModuloVentaVendedor().setVisible(true);
                     }
 
                 } else {
