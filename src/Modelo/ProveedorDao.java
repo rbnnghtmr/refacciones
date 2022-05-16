@@ -16,7 +16,7 @@ public class ProveedorDao {
     public boolean RegistrarProveedor(Proveedor pr){
         String sql = "INSERT INTO proveedor(rfc, nombre, telefono, direccion) VALUES (?,?,?,?)";
         try {
-           con = cn.getConnection();
+           con = Conexion.conectar();
            ps = con.prepareStatement(sql);
            ps.setString(1, pr.getRfc());
            ps.setString(2, pr.getNombre());
@@ -40,7 +40,7 @@ public class ProveedorDao {
         List<Proveedor> Listapr = new ArrayList();
         String sql = "SELECT * FROM proveedor";
         try {
-            con = cn.getConnection();
+           con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {                
@@ -62,7 +62,7 @@ public class ProveedorDao {
     public boolean EliminarProveedor(int id){
         String sql = "DELETE FROM proveedor WHERE id = ? ";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.execute();
@@ -82,7 +82,7 @@ public class ProveedorDao {
     public boolean ModificarProveedor(Proveedor pr){
         String sql = "UPDATE proveedor SET rfc=?, nombre=?, telefono=?, direccion=? WHERE id=?";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setString(1, pr.getRfc());
             ps.setString(2, pr.getNombre());

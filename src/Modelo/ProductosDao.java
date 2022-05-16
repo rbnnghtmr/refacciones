@@ -1,12 +1,32 @@
 
 package Modelo;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.swing.filechooser.FileSystemView;
 
 public class ProductosDao {
     Connection con;
@@ -17,7 +37,7 @@ public class ProductosDao {
     public boolean RegistrarProductos(Productos pro){
         String sql = "INSERT INTO productos (codigo, nombre, proveedor, stock, precio) VALUES (?,?,?,?,?)";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setString(1, pro.getCodigo());
             ps.setString(2, pro.getNombre());
@@ -36,7 +56,7 @@ public class ProductosDao {
        List<Productos> Listapro = new ArrayList();
        String sql = "SELECT pr.id AS id_proveedor, pr.nombre AS nombre_proveedor, p.* FROM proveedor pr INNER JOIN productos p ON pr.id = p.proveedor ORDER BY p.id DESC";
        try {
-           con = cn.getConnection();
+           con = Conexion.conectar();
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            while (rs.next()) {               
@@ -103,7 +123,7 @@ public class ProductosDao {
         Productos producto = new Productos();
         String sql = "SELECT * FROM productos WHERE codigo = ?";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setString(1, cod);
             rs = ps.executeQuery();
@@ -122,7 +142,7 @@ public class ProductosDao {
         Productos pro = new Productos();
         String sql = "SELECT pr.id AS id_proveedor, pr.nombre AS nombre_proveedor, p.* FROM proveedor pr INNER JOIN productos p ON p.proveedor = pr.id WHERE p.id = ?";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -144,7 +164,7 @@ public class ProductosDao {
         Proveedor pr = new Proveedor();
         String sql = "SELECT * FROM proveedor WHERE nombre = ?";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setString(1, nombre);
             rs = ps.executeQuery();
@@ -160,7 +180,7 @@ public class ProductosDao {
         Config conf = new Config();
         String sql = "SELECT * FROM config";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -200,4 +220,98 @@ public class ProductosDao {
            }
        }
    }
+    
+     public void pdfV(int idproducto, int idproveedor) {
+        try {
+            Date date = new Date();
+            FileOutputStream archivo;
+            String url = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+            File salida = new File(url + "reporte de productoss.pdf");
+            archivo = new FileOutputStream(salida);
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, archivo);
+            doc.open();
+            Image img = Image.getInstance(getClass().getResource("/Img/logo_pdf.png"));
+            //Fecha
+            Paragraph fecha = new Paragraph();
+            Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);
+            fecha.add(Chunk.NEWLINE);
+            fecha.add(new SimpleDateFormat("dd/MM/yyyy").format(date) + "\n\n");
+            PdfPTable Encabezado = new PdfPTable(4);
+            Encabezado.setWidthPercentage(100);
+            Encabezado.getDefaultCell().setBorder(0);
+            float[] columnWidthsEncabezado = new float[]{20f, 30f, 70f, 40f};
+            Encabezado.setWidths(columnWidthsEncabezado);
+            Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
+            Encabezado.addCell(img);
+            Encabezado.addCell("");
+            //info empresa
+            String config = "SELECT * FROM config";
+            try {
+                con = Conexion.conectar();
+                ps = con.prepareStatement(config);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    Encabezado.addCell("Rfc:    " + rs.getString("rfc") + "\nNombre: " + rs.getString("nombre") + "\nTeléfono: " + rs.getString("telefono") + "\nDirección: " + rs.getString("direccion") + "\n\n");
+                }
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+            //
+            Encabezado.addCell(fecha);
+            doc.add(Encabezado);
+            //Producto
+
+            PdfPTable tabla = new PdfPTable(5);
+            tabla.setWidthPercentage(100);
+            tabla.getDefaultCell().setBorder(0);
+            float[] columnWidths = new float[]{10f, 50f, 15f, 15f, 15f};
+            tabla.setWidths(columnWidths);
+            tabla.setHorizontalAlignment(Element.ALIGN_LEFT);
+            PdfPCell c1 = new PdfPCell(new Phrase("Codigo.", negrita));
+            PdfPCell c2 = new PdfPCell(new Phrase("Descripción.", negrita));
+            PdfPCell c3 = new PdfPCell(new Phrase("P. unt.", negrita));
+            PdfPCell c4 = new PdfPCell(new Phrase("Stock", negrita));
+            PdfPCell c5 = new PdfPCell(new Phrase("Proveedor", negrita));
+            c1.setBorder(Rectangle.NO_BORDER);
+            c2.setBorder(Rectangle.NO_BORDER);
+            c3.setBorder(Rectangle.NO_BORDER);
+            c4.setBorder(Rectangle.NO_BORDER);
+            c5.setBorder(Rectangle.NO_BORDER);
+            c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            c2.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            c3.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            c4.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            c5.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            tabla.addCell(c1);
+            tabla.addCell(c2);
+            tabla.addCell(c3);
+            tabla.addCell(c4);
+            tabla.addCell(c5);
+            String sql = "SELECT p.codigo, p.nombre, p.precio, p.stock, pr.nombre FROM productos p INNER JOIN proveedor pr ON p.proveedor = pr.id";
+            try {
+                ps.setInt(1, idproducto);
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabla.addCell(rs.getString("codigo"));
+                    tabla.addCell(rs.getString("nombre"));
+                    tabla.addCell(rs.getString("precio"));
+                    tabla.addCell(rs.getString("stock"));
+                    tabla.addCell(rs.getString("proveedor"));
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+            doc.add(tabla);
+            doc.close();
+            archivo.close();
+            Desktop.getDesktop().open(salida);
+        } catch (DocumentException | IOException e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    
 }

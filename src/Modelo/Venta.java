@@ -8,19 +8,21 @@ public class Venta {
     private String vendedor;
     private double subtotal; //para agregar una variable para un total ya con iva.
     private double total;
+    private double pago; //para guardar la cantidad con la que se pagó para poder reflejar el cambio en el ticket
     private String fecha;
     
     public Venta(){
         
     }
 
-    public Venta(int id, int cliente, String nombre_cli, String vendedor, double subtotal, double total, String fecha) {
+    public Venta(int id, int cliente, String nombre_cli, String vendedor, double subtotal, double total, double pago, String fecha) {
         this.id = id;
         this.cliente = cliente;
         this.nombre_cli = nombre_cli;
         this.vendedor = vendedor;
         this.subtotal = subtotal;
         this.total = total;
+        this.pago = pago;
         this.fecha = fecha;
     }
 
@@ -73,8 +75,15 @@ public class Venta {
     public void setTotal(double total) {
         this.total = total;
     }
-
-
+    
+    public double getPago(){
+        return pago;
+    }
+    
+    public void setPago(double pago){
+        this.pago = pago;
+    }
+    
     public String getFecha() {
         return fecha;
     }

@@ -13,18 +13,22 @@ public class Cliente {
     private int id;
     private String rfc;
     private String nombre;
+    private String mail;
     private String telefono;
     private String direccion;
+    private String ultima;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String rfc, String nombre, String telefono, String direccion) {
+    public Cliente(int id, String rfc, String nombre, String mail, String telefono, String direccion, String ultima) {
         this.id = id;
         this.rfc = rfc;
         this.nombre = nombre;
+        this.mail = mail;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.ultima = ultima;
     }
 
     public int getId() {
@@ -50,7 +54,15 @@ public class Cliente {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
+    public String getMail(){
+        return mail;
+    }
+    
+    public void setMail(String mail){
+        this.mail = mail;
+    }
+    
     public String getTelefono() {
         return telefono;
     }
@@ -66,5 +78,14 @@ public class Cliente {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    public String getUltima() {
+        return ultima;
+    }
+
+    public void setUltima(String ultima) {
+        this.ultima = ultima;
+    }
+    
     
 }

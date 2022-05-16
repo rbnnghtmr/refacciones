@@ -39,7 +39,7 @@ public class VentaDao {
         int id = 0;
         String sql = "SELECT MAX(id) FROM ventas";
         try {
-            con = cn.getConnection();
+           con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -52,14 +52,16 @@ public class VentaDao {
     }
     
     public int RegistrarVenta(Venta v){
-        String sql = "INSERT INTO ventas (cliente, vendedor, total, subtotal, fecha) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO ventas (cliente, vendedor, total, subtotal, pago, fecha) VALUES (?,?,?,?,?,?)";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1, v.getCliente());
             ps.setString(2, v.getVendedor());
-            ps.setDouble(4, v.getTotal());
-            ps.setString(5, v.getFecha());
+            ps.setDouble(3, v.getTotal());
+            ps.setDouble(4, v.getSubtotal());
+            ps.setDouble(5, v.getPago());
+            ps.setString(6, v.getFecha());
             
             ps.execute();
         } catch (SQLException e) {
@@ -77,7 +79,7 @@ public class VentaDao {
     public int RegistrarDetalle(Detalle Dv){
        String sql = "INSERT INTO detalle (id_pro, cantidad, precio, id_venta) VALUES (?,?,?,?)";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1, Dv.getId_pro());
             ps.setInt(2, Dv.getCantidad());
@@ -99,7 +101,7 @@ public class VentaDao {
     public boolean ActualizarStock(int cant, int id){
         String sql = "UPDATE productos SET stock = ? WHERE id = ?";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1,cant);
             ps.setInt(2, id);
@@ -115,7 +117,7 @@ public class VentaDao {
        List<Venta> ListaVenta = new ArrayList();
        String sql = "SELECT c.id AS id_cli, c.nombre, v.* FROM clientes c INNER JOIN ventas v ON c.id = v.cliente";
        try {
-           con = cn.getConnection();
+           con = Conexion.conectar();
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            while (rs.next()) {               
@@ -123,6 +125,7 @@ public class VentaDao {
                vent.setId(rs.getInt("id"));
                vent.setNombre_cli(rs.getString("nombre"));
                vent.setVendedor(rs.getString("vendedor"));
+               vent.setSubtotal(rs.getDouble("subtotal"));
                vent.setTotal(rs.getDouble("total"));
                ListaVenta.add(vent);
            }
@@ -135,7 +138,7 @@ public class VentaDao {
         Venta cl = new Venta();
         String sql = "SELECT * FROM ventas WHERE id = ?";
         try {
-            con = cn.getConnection();
+            con = Conexion.conectar();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -143,7 +146,9 @@ public class VentaDao {
                 cl.setId(rs.getInt("id"));
                 cl.setCliente(rs.getInt("cliente"));
                 cl.setTotal(rs.getDouble("total"));
+                cl.setSubtotal(rs.getDouble("subtotal"));
                 cl.setVendedor(rs.getString("vendedor"));
+                cl.setPago(rs.getDouble("pago"));
                 cl.setFecha(rs.getString("fecha"));
             }
         } catch (SQLException e) {
@@ -151,7 +156,7 @@ public class VentaDao {
         }
         return cl;
     }
-    public void pdfV(int idventa, int Cliente, double subtotal, double total, String usuario) {
+    public void pdfV(int idventa, int Cliente, double subtotal, double total, double pago, String usuario) {
         try {
             Date date = new Date();
             FileOutputStream archivo;
@@ -180,7 +185,7 @@ public class VentaDao {
             String config = "SELECT * FROM config";
             String mensaje = "";
             try {
-                con = cn.getConnection();
+                con = Conexion.conectar();
                 ps = con.prepareStatement(config);
                 rs = ps.executeQuery();
                 if (rs.next()) {
@@ -275,7 +280,18 @@ public class VentaDao {
             doc.add(tabla);
             Paragraph info = new Paragraph();
             info.add(Chunk.NEWLINE);
-            info.add("Total S/: " + total);
+            info.add("Subtotal: $" +subtotal);
+            info.add(Chunk.NEWLINE);
+            double impuesto = subtotal * 0.16;
+            info.add("IVA: $" +impuesto);
+            info.add(Chunk.NEWLINE);
+            info.add("Total: $" + total);
+            info.add(Chunk.NEWLINE);
+            info.add("Pago: $" +pago);
+            double cambio = pago - total;
+            info.add(Chunk.NEWLINE);
+            info.add(Chunk.NEWLINE);
+            info.add("Cambio: $" +cambio);
             info.setAlignment(Element.ALIGN_RIGHT);
             doc.add(info);
             Paragraph firma = new Paragraph();

@@ -5,7 +5,7 @@
  */
 package sistemaventa;
 
-import Vista.Login;
+import ventanas.Login;
 
 /**
  *
